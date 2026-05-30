@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Finance Fundamentals — Cañada College</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --green-deep: #0B3D1E;
+  --green-dark: #155C30;
+  --green-mid: #1E7A42;
+  --green-accent: #27A05A;
+  --green-light: #E8F5EE;
+  --green-pale: #F2FAF5;
+  --gold-dark: #7A5510;
+  --gold-mid: #C49A25;
+  --gold-light: #F0D070;
+  --gold-pale: #FBF5E0;
+  --text-dark: #0D2818;
+  --text-mid: #2D5040;
+  --text-muted: #5A7A65;
+  --bg: #F5FAF7;
+  --card: #FFFFFF;
+  --border: #C8DDD0;
+  --shadow: 0 2px 12px rgba(11,61,30,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.header { background: var(--green-deep); }
+
+.header-band {
+  background: var(--gold-mid);
+  padding: 7px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-band span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green-deep);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.header-main {
+  padding: 30px 36px 26px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+}
+
+.header-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.68);
+  margin-top: 7px;
+  font-style: italic;
+}
+
+.header-instructor { text-align: right; }
+
+.instructor-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  color: var(--gold-light);
+  font-weight: 500;
+}
+
+.instructor-role {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 3px;
+}
+
+.nav {
+  background: var(--green-dark);
+  padding: 0 36px;
+  display: flex;
+  align-items: stretch;
+  border-bottom: 3px solid var(--gold-mid);
+  overflow-x: auto;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 22px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+
+.nav-btn:hover { color: white; background: rgba(255,255,255,0.07); }
+
+.nav-btn.active {
+  color: var(--gold-light);
+  border-bottom-color: var(--gold-mid);
+}
+
+.step-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.18s;
+}
+
+.nav-btn.active .step-badge {
+  background: var(--gold-mid);
+  color: var(--green-deep);
+}
+
+.nav-arrow {
+  color: rgba(255,255,255,0.25);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+  pointer-events: none;
+}
+
+.main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 44px 36px 60px;
+}
+
+.section { display: none; }
+.section.active { display: block; }
+
+.sec-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gold-pale);
+  color: var(--gold-dark);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid #E8D090;
+  margin-bottom: 12px;
+}
+
+.sec-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--green-deep);
+  line-height: 1.25;
+}
+
+.sec-lead {
+  font-size: 17px;
+  color: var(--text-mid);
+  margin-top: 10px;
+  max-width: 720px;
+  line-height: 1.7;
+}
+
+.sec-head { margin-bottom: 32px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: var(--shadow);
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: var(--green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  flex-shrink: 0;
+}
+
+.card p {
+  font-size: 15px;
+  color: var(--text-mid);
+  line-height: 1.65;
+}
+
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 22px; }
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 22px; }
+
+.callout {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 20px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.callout.green { background: var(--green-light); border-left: 4px solid var(--green-accent); }
+.callout.gold { background: var(--gold-pale); border-left: 4px solid var(--gold-mid); }
+
+.callout-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-head {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--green-dark);
+  margin-bottom: 4px;
+}
+
+.callout.gold .callout-head { color: var(--gold-dark); }
+
+.callout-body { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+.steps { display: flex; flex-direction: column; gap: 13px; margin: 20px 0; }
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--green-mid);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.step-title { font-weight: 600; color: var(--green-dark); font-size: 15px; margin-bottom: 3px; }
+.step-body { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+
+.method-card { background: var(--card); border-radius: 14px; padding: 28px; box-shadow: var(--shadow); }
+.method-card.snow { border: 2px solid #5DA8D0; }
+.method-card.aval { border: 2px solid var(--green-accent); }
+
+.m-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.method-card.snow .m-badge { background: #E3F3FC; color: #2176AE; }
+.method-card.aval .m-badge { background: var(--green-light); color: var(--green-dark); }
+
+.m-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 23px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+
+.m-tag { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
+
+.m-body { font-size: 15px; color: var(--text-mid); line-height: 1.65; margin-bottom: 16px; }
+
+.pclist { list-style: none; font-size: 14px; }
+.pclist li { padding: 4px 0; display: flex; align-items: flex-start; gap: 8px; color: var(--text-mid); }
+.pclist li .pi { margin-top: 2px; font-size: 13px; flex-shrink: 0; }
+.pclist li.pro .pi { color: #27AE60; }
+.pclist li.con .pi { color: #E74C3C; }
+
+.ctable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 20px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.ctable th {
+  background: var(--green-dark);
+  color: white;
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+
+.ctable th:first-child { background: var(--green-deep); }
+
+.ctable td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text-mid);
+  line-height: 1.5;
+}
+
+.ctable tr:last-child td { border-bottom: none; }
+.ctable tr:nth-child(even) td { background: var(--green-pale); }
+.ctable td:first-child { font-weight: 600; color: var(--green-dark); background: #F0F7F3; }
+.ctable tr:nth-child(even) td:first-child { background: #E8F2ED; }
+
+.cc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+.cc-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 4px 10px;
+  border-radius: 16px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.cc-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--green-deep);
+  margin-bottom: 8px;
+}
+
+.cc-desc { font-size: 14px; color: var(--text-mid); line-height: 1.6; margin-bottom: 12px; }
+
+.cc-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 3px;
+}
+
+.cc-use { font-size: 13px; color: var(--green-dark); font-weight: 500; }
+
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+
+.rule-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.5;
+  padding: 11px 13px;
+  background: var(--green-pale);
+  border-radius: 8px;
+}
+
+.rule-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+.acct-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+.acct-tag {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.tag-taxable { background: #FCE8E8; color: #B03020; }
+.tag-free { background: var(--green-light); color: var(--green-dark); }
+.tag-deferred { background: var(--gold-pale); color: var(--gold-dark); }
+
+.acct-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green-deep);
+  margin-bottom: 10px;
+  padding-right: 80px;
+}
+
+.acct-desc { font-size: 14px; color: var(--text-mid); line-height: 1.65; margin-bottom: 14px; }
+
+.acct-facts { font-size: 13px; }
+.acct-facts-label { color: var(--green-dark); font-weight: 600; margin-bottom: 5px; }
+.acct-facts-list { color: var(--text-mid); line-height: 1.75; }
+
+.calc-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; margin-top: 8px; }
+
+.calc-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+.calc-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--green-deep);
+  margin-bottom: 24px;
+}
+
+.inp-group { margin-bottom: 22px; }
+
+.inp-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inp-val { font-size: 15px; font-weight: 600; color: var(--green-mid); }
+
+input[type="range"] {
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+  accent-color: var(--green-mid);
+}
+
+.inp-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+
+.metrics { display: flex; flex-direction: column; gap: 14px; }
+
+.metric {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 22px;
+  box-shadow: var(--shadow);
+}
+
+.metric.hero {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+}
+
+.metric-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.metric.hero .metric-label { color: rgba(255,255,255,0.6); }
+
+.metric-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.metric.hero .metric-val { color: var(--gold-light); }
+
+.metric-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+.metric.hero .metric-sub { color: rgba(255,255,255,0.5); }
+
+.metric.gold-card { background: var(--gold-pale); border-color: #E8D090; }
+.metric.gold-card .metric-label { color: var(--gold-dark); }
+.metric.gold-card .metric-val { color: var(--gold-dark); }
+.metric.gold-card .metric-sub { color: #9A7A20; }
+
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: var(--shadow);
+  margin-top: 28px;
+}
+
+.chart-head { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: var(--green-deep); margin-bottom: 5px; }
+.chart-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+
+.legend { display: flex; gap: 22px; margin-bottom: 16px; font-size: 13px; color: var(--text-muted); }
+.legend-item { display: flex; align-items: center; gap: 7px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+.subsec-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--green-deep);
+  margin: 28px 0 16px;
+}
+
+.footer {
+  background: var(--green-deep);
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  padding: 28px 36px;
+  font-size: 13px;
+}
+
+.footer-name { color: var(--gold-light); font-weight: 600; }
+
+.terms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.flip-card {
+  height: 160px;
+  perspective: 900px;
+  cursor: pointer;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+
+.flip-front, .flip-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.flip-front {
+  background: var(--green-deep);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.flip-front-emoji { font-size: 26px; margin-bottom: 10px; }
+
+.flip-front-term {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1.2;
+}
+
+.flip-front-hint {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.flip-back {
+  background: var(--card);
+  border: 2px solid var(--green-accent);
+  transform: rotateY(180deg);
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+  padding: 16px 18px;
+}
+
+.flip-back-term {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--green-mid);
+  margin-bottom: 8px;
+}
+
+.flip-back-def {
+  font-size: 13px;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .terms-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .flip-card { height: 140px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-band">
+    <span>Cañada College — Career Course</span>
+    <span>Personal Finance Fundamentals</span>
+  </div>
+  <div class="header-main">
+    <div>
+      <div class="header-title">Personal Finance<br>Fundamentals</div>
+      <div class="header-sub">A step-by-step guide to building financial security and lasting wealth</div>
+    </div>
+    <div class="header-instructor">
+      <div class="instructor-name">Jose Manzo</div>
+      <div class="instructor-role">Counselor &amp; Professor · Cañada College</div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showTab('debt')">
+    <span class="step-badge">1</span> Debt Management
+  </button>
+  <span class="nav-arrow">→</span>
+  <button class="nav-btn" onclick="showTab('banking')">
+    <span class="step-badge">2</span> Banking
+  </button>
+  <span class="nav-arrow">→</span>
+  <button class="nav-btn" onclick="showTab('credit')">
+    <span class="step-badge">3</span> Credit Cards
+  </button>
+  <span class="nav-arrow">→</span>
+  <button class="nav-btn" onclick="showTab('investing')">
+    <span class="step-badge">4</span> Investing
+  </button>
+  <span class="nav-arrow">→</span>
+  <button class="nav-btn" onclick="showTab('terms')">
+    <span class="step-badge" style="background: rgba(196,154,37,0.35);">★</span> Key Terms
+  </button>
+</nav>
+
+<main class="main">
+
+<!-- ======================== DEBT ======================== -->
+<section id="tab-debt" class="section active">
+  <div class="sec-head">
+    <div class="sec-badge">Step 1 · Start Here</div>
+    <div class="sec-title">Debt Management</div>
+    <div class="sec-lead">Before you save or invest, tackle debt. High-interest debt grows faster than most investments can earn — clearing it first is one of the highest-return moves you can make.</div>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-icon">💡</div>
+    <div>
+      <div class="callout-head">Why Debt Comes First in the Order of Operations</div>
+      <div class="callout-body">If you have a credit card charging 22% interest, paying it off is like earning a guaranteed 22% return. No investment can reliably match that. Until high-interest debt is gone, it silently drains every dollar you try to save or grow.</div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-top:28px;">
+    <div class="method-card snow">
+      <span class="m-badge">🌨 Method 1</span>
+      <div class="m-name">Snowball Method</div>
+      <div class="m-tag">"Small wins build big momentum"</div>
+      <div class="m-body">List all debts from smallest to largest balance — ignoring interest rates. Pay minimums on everything, then throw every extra dollar at the smallest debt. Once it's gone, roll that full payment to the next debt. Your payoff power "snowballs" over time.</div>
+      <ul class="pclist">
+        <li class="pro"><span class="pi">✓</span> Builds motivation through quick early wins</li>
+        <li class="pro"><span class="pi">✓</span> Reduces number of open debts fast</li>
+        <li class="pro"><span class="pi">✓</span> Best for people who need encouragement to stay on track</li>
+        <li class="con"><span class="pi">✗</span> May cost more total interest over time</li>
+        <li class="con"><span class="pi">✗</span> Ignores which debt is most expensive</li>
+      </ul>
+    </div>
+
+    <div class="method-card aval">
+      <span class="m-badge">🏔 Method 2</span>
+      <div class="m-name">Avalanche Method</div>
+      <div class="m-tag">"Attack the most expensive debt first"</div>
+      <div class="m-body">List all debts from highest to lowest interest rate. Pay minimums on everything, then put every extra dollar toward the highest-rate debt. Once gone, attack the next highest. This is mathematically the fastest way out of debt.</div>
+      <ul class="pclist">
+        <li class="pro"><span class="pi">✓</span> Saves the most money in total interest paid</li>
+        <li class="pro"><span class="pi">✓</span> Mathematically optimal — fastest payoff overall</li>
+        <li class="pro"><span class="pi">✓</span> Best for disciplined, numbers-driven people</li>
+        <li class="con"><span class="pi">✗</span> First payoff can take longer to feel</li>
+        <li class="con"><span class="pi">✗</span> Requires patience and sustained focus</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-icon">🎯</div>
+    <div>
+      <div class="callout-head">Which Method Should You Choose?</div>
+      <div class="callout-body">The best method is the one you will actually stick to. If you need motivation and quick wins to stay engaged, start with Snowball. If you want to minimize total interest paid and you're disciplined, use Avalanche. Both work — starting is what matters.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:8px;">
+    <div class="card-title">
+      <div class="card-icon">📋</div>
+      Your Debt Payoff Blueprint
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">List every debt you owe</div>
+          <div class="step-body">Write down each debt with its current balance, minimum payment, and interest rate. Include student loans, car loans, credit cards, medical bills, and any money owed to family — everything counts.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Build a small starter emergency fund ($500–$1,000)</div>
+          <div class="step-body">Before aggressively attacking debt, build a small cushion. This prevents a flat tire or unexpected bill from forcing you right back into more debt and restarting your progress.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Pay the minimum on all debts except your target</div>
+          <div class="step-body">Never miss a minimum payment on any debt — that protects your credit score and avoids late fees. Focus every extra dollar you can find on your one target debt at a time.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Find extra money to accelerate payoff</div>
+          <div class="step-body">Look for subscriptions to cancel, meals to cook at home, or extra hours to pick up. Even an extra $50/month dramatically speeds up the timeline. Sell things you don't need. Every dollar matters.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">Roll each payment forward when a debt is gone</div>
+          <div class="step-body">When a debt is paid off, don't spend that payment — add it to what you're putting toward the next debt. Your attack power grows with every win until the last debt falls.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== BANKING ======================== -->
+<section id="tab-banking" class="section">
+  <div class="sec-head">
+    <div class="sec-badge">Step 2 · Build Your Foundation</div>
+    <div class="sec-title">Banking &amp; Saving</div>
+    <div class="sec-lead">Once debt is under control, build a strong financial foundation. The right accounts protect your money, keep it accessible, and even grow it — for zero extra effort.</div>
+  </div>
+
+  <div class="subsec-title" style="margin-top:0;">Where to Keep Your Money</div>
+
+  <table class="ctable">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>🏛 Traditional Bank</th>
+        <th>📈 High-Yield Savings (HYSA)</th>
+        <th>🤝 Credit Union</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Interest Rate</td>
+        <td>Very low (0.01–0.05% APY)</td>
+        <td>High (4–5%+ APY)</td>
+        <td>Low to moderate</td>
+      </tr>
+      <tr>
+        <td>Accessibility</td>
+        <td>Branches &amp; ATMs everywhere</td>
+        <td>Online only (usually)</td>
+        <td>Local branches + shared ATM networks</td>
+      </tr>
+      <tr>
+        <td>Monthly Fees</td>
+        <td>Common unless conditions met</td>
+        <td>Usually fee-free</td>
+        <td>Very low or none</td>
+      </tr>
+      <tr>
+        <td>Who Can Join</td>
+        <td>Anyone</td>
+        <td>Anyone</td>
+        <td>Must meet membership criteria (employer, location, etc.)</td>
+      </tr>
+      <tr>
+        <td>Best Used For</td>
+        <td>Checking account, daily access</td>
+        <td>Emergency fund, savings goals</td>
+        <td>Lower-rate loans, personal service</td>
+      </tr>
+      <tr>
+        <td>Deposit Insurance</td>
+        <td>FDIC up to $250,000</td>
+        <td>FDIC up to $250,000</td>
+        <td>NCUA up to $250,000</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout gold">
+    <div class="callout-icon">💰</div>
+    <div>
+      <div class="callout-head">The HYSA Difference Is Enormous</div>
+      <div class="callout-body">Keeping $10,000 in a traditional savings account at 0.01% earns you $1 per year. That same $10,000 in a High-Yield Savings Account at 4.5% earns $450 per year — 45,000% more, for zero extra work. Popular options include Ally, Marcus by Goldman Sachs, SoFi, and American Express Savings.</div>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="card-title">
+        <div class="card-icon">🛡️</div>
+        Emergency Fund
+      </div>
+      <p>Your financial safety net for life's surprises — job loss, car repairs, medical bills. Without one, any unexpected expense sends you back into debt and restarts your progress.</p>
+      <div class="callout green" style="margin-top:14px; margin-bottom:0;">
+        <div>
+          <div class="callout-head">Goal: 3–6 Months of Expenses</div>
+          <div class="callout-body">If your monthly expenses are $2,500, aim for $7,500–$15,000 in a HYSA. Once funded, don't touch it unless it's a true emergency — not a sale, not a vacation, not a want.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="card-icon">🪣</div>
+        Sinking Funds
+      </div>
+      <p>A sinking fund is savings you build over time for a specific, planned expense. Instead of being blindsided by a large bill, you've already been quietly saving for it month by month.</p>
+      <div style="margin-top:14px; font-size:14px; color: var(--text-mid); line-height:1.65;">
+        <strong style="color: var(--green-dark); display:block; margin-bottom:5px;">Common sinking fund goals:</strong>
+        New tires ($600) · Vacation ($1,500) · Laptop ($900) · Wedding gift fund ($400) · Moving expenses ($2,000)
+      </div>
+      <div style="margin-top:10px; font-size:13px; color: var(--text-muted);">Label separate sub-accounts for each goal. Many HYSAs let you create named "buckets" for free.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="card-icon">📅</div>
+        Annual Expenses
+      </div>
+      <p>Many expenses only arrive once or twice a year — but they're completely predictable. Save monthly so they never feel like emergencies when they arrive.</p>
+      <div style="margin-top:14px; font-size:14px; color: var(--green-dark); font-weight: 600; margin-bottom:8px;">Divide yearly cost ÷ 12 = monthly transfer</div>
+      <div style="font-size:13px; color: var(--text-mid); display:flex; flex-direction:column; gap:6px;">
+        <span>🚗 Car registration: $240/yr → <strong>$20/mo</strong></span>
+        <span>🏥 Insurance deductible: $1,500/yr → <strong>$125/mo</strong></span>
+        <span>🎁 Holiday gifts: $600/yr → <strong>$50/mo</strong></span>
+        <span>🦷 Dental/vision: $360/yr → <strong>$30/mo</strong></span>
+        <span>✈️ Annual trip: $1,200/yr → <strong>$100/mo</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <div class="card-icon">🏗️</div>
+      Building Your Banking System Step by Step
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Open a no-fee checking account at a bank or credit union</div>
+          <div class="step-body">This is your everyday account — direct deposit lands here, bills get paid here. Keep 1 month of expenses in it. Look for accounts with no monthly fee, a large ATM network, and mobile deposit.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Open a High-Yield Savings Account for your emergency fund</div>
+          <div class="step-body">Keep it at a different bank from your checking — the friction of transferring prevents impulse spending. Build up to 3–6 months of expenses here before anything else.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Create labeled sinking funds for each savings goal</div>
+          <div class="step-body">Many HYSAs offer free sub-accounts or "buckets" you can name. One bucket per goal keeps your savings organized and intentional — you always know exactly what the money is for.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Automate transfers on payday</div>
+          <div class="step-body">Set up automatic transfers the same day your paycheck arrives. Money that moves before you see it is money you never miss. Automation removes willpower from the equation completely.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== CREDIT ======================== -->
+<section id="tab-credit" class="section">
+  <div class="sec-head">
+    <div class="sec-badge">Step 3 · Use Credit Wisely</div>
+    <div class="sec-title">Credit Cards</div>
+    <div class="sec-lead">Credit cards are powerful financial tools — used responsibly, they build your credit score, earn rewards, and offer consumer protections unavailable with cash or debit. Used carelessly, they trap you in expensive debt.</div>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-icon">⚖️</div>
+    <div>
+      <div class="callout-head">The Golden Rule of Credit Cards</div>
+      <div class="callout-body">Only charge what you can pay in full every single month. The moment you carry a balance, you're paying 20–30% interest — which instantly wipes out any rewards you earned and more. Treat your credit card like a debit card that happens to earn you rewards.</div>
+    </div>
+  </div>
+
+  <div class="subsec-title">Types of Credit Cards</div>
+
+  <div class="g2">
+    <div class="cc-card">
+      <div class="cc-badge" style="background: var(--green-light); color: var(--green-dark);">🏆 Most Beginner-Friendly</div>
+      <div class="cc-name">Cash Back Card</div>
+      <div class="cc-desc">Earn a percentage back (typically 1.5–5%) on every purchase. Simple, straightforward, and consistently valuable for everyday spending — no points systems to learn, no categories to track. The cash is deposited directly to your account or applied as a statement credit.</div>
+      <div class="cc-label">Best for</div>
+      <div class="cc-use">Anyone who wants simple, reliable rewards without complexity. An excellent first card choice.</div>
+    </div>
+
+    <div class="cc-card">
+      <div class="cc-badge" style="background: #E8EFFE; color: #2040A0;">✈️ Travel Rewards</div>
+      <div class="cc-name">Travel Rewards Card</div>
+      <div class="cc-desc">Earn points or miles redeemable for flights, hotels, and experiences. Often include travel insurance, no foreign transaction fees, and lounge access. Many have annual fees ($95–$695) that are offset by the value of their perks — but only if you actually use them.</div>
+      <div class="cc-label">Best for</div>
+      <div class="cc-use">Frequent travelers who will consistently use enough perks to offset the annual fee.</div>
+    </div>
+
+    <div class="cc-card">
+      <div class="cc-badge" style="background: #FEF0E8; color: #B04818;">🔐 Credit Builder</div>
+      <div class="cc-name">Secured Credit Card</div>
+      <div class="cc-desc">You make a refundable cash deposit (e.g., $300–$500) that becomes your credit limit. It works exactly like a regular credit card — you make purchases and pay them off monthly — but it's backed by your deposit, making it much easier to qualify for. Reports to all three credit bureaus to build your score.</div>
+      <div class="cc-label">Best for</div>
+      <div class="cc-use">People with no credit history, or those rebuilding credit after financial setbacks.</div>
+    </div>
+
+    <div class="cc-card">
+      <div class="cc-badge" style="background: #F0EAFE; color: #5B21B6;">🎓 Student Card</div>
+      <div class="cc-name">Student Credit Card</div>
+      <div class="cc-desc">Designed specifically for college students with limited or no credit history. Easier approval requirements, lower credit limits to reduce risk, and often student-friendly perks like rewards for good grades, no annual fee, or free credit score monitoring.</div>
+      <div class="cc-label">Best for</div>
+      <div class="cc-use">College students building their first credit history before entering the workforce.</div>
+    </div>
+
+    <div class="cc-card">
+      <div class="cc-badge" style="background: var(--green-light); color: var(--green-dark);">🔄 Balance Transfer</div>
+      <div class="cc-name">Balance Transfer Card</div>
+      <div class="cc-desc">Offers 0% APR for a promotional period (typically 12–21 months) on balances transferred from other cards. Lets you pause interest and pay down the principal aggressively. Usually charges a one-time transfer fee of 3–5% of the amount moved.</div>
+      <div class="cc-label">Best for</div>
+      <div class="cc-use">People with existing high-interest credit card debt and a concrete plan to pay it off during the 0% window.</div>
+    </div>
+
+    <div class="cc-card">
+      <div class="cc-badge" style="background: var(--gold-pale); color: var(--gold-dark);">⛽ Store / Category</div>
+      <div class="cc-name">Store or Category Card</div>
+      <div class="cc-desc">Earn boosted rewards at specific retailers (Amazon, Target, Costco) or spending categories (gas, groceries, dining). Can be highly valuable if your spending is concentrated in those areas, but typically earn little or nothing outside them.</div>
+      <div class="cc-label">Best for</div>
+      <div class="cc-use">People with consistent, predictable spending at specific stores or in specific categories.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:8px;">
+    <div class="card-title">
+      <div class="card-icon">✅</div>
+      Rules for Using Credit Responsibly
+    </div>
+    <div class="rules-grid">
+      <div class="rule-item"><span class="rule-icon">💳</span><span>Pay your full statement balance every month — never just the minimum</span></div>
+      <div class="rule-item"><span class="rule-icon">📊</span><span>Keep credit utilization below 30% (ideally below 10%) of your total limit</span></div>
+      <div class="rule-item"><span class="rule-icon">⏰</span><span>Never miss a payment — set up autopay for at least the minimum as a backup</span></div>
+      <div class="rule-item"><span class="rule-icon">🔍</span><span>Review your statements monthly for errors, fraudulent charges, or forgotten subscriptions</span></div>
+      <div class="rule-item"><span class="rule-icon">📅</span><span>Don't open multiple cards quickly — each application triggers a hard inquiry on your credit report</span></div>
+      <div class="rule-item"><span class="rule-icon">🚫</span><span>Avoid cash advances — they carry immediate fees and no grace period whatsoever</span></div>
+      <div class="rule-item"><span class="rule-icon">📱</span><span>Spend based on your actual budget, not your credit limit — the limit is a ceiling, not a target</span></div>
+      <div class="rule-item"><span class="rule-icon">🎁</span><span>Choose a card whose rewards match your real spending habits, not idealized ones</span></div>
+    </div>
+  </div>
+
+  <div class="callout green" style="margin-top:20px;">
+    <div class="callout-icon">📈</div>
+    <div>
+      <div class="callout-head">How Your Credit Score Is Built</div>
+      <div class="callout-body">Payment History (35%) — the most important factor, bar none. Amounts Owed / Utilization (30%) — keep balances low relative to your limits. Length of Credit History (15%) — older accounts help your score, so don't close them. Credit Mix (10%) — having different types of credit (card, loan) helps. New Credit (10%) — too many new applications in a short period hurts. The single most powerful habit: pay on time, every time, without exception.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== INVESTING ======================== -->
+<section id="tab-investing" class="section">
+  <div class="sec-head">
+    <div class="sec-badge">Step 4 · Grow Your Wealth</div>
+    <div class="sec-title">Investing</div>
+    <div class="sec-lead">Once you've tackled debt, built your safety net, and established good credit habits, it's time to grow your money. Investing is how ordinary people build extraordinary long-term wealth — and time is the secret ingredient.</div>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-icon">⏳</div>
+    <div>
+      <div class="callout-head">The Power of Time: Compound Growth</div>
+      <div class="callout-body">$200/month invested starting at age 22 (at 7% annual return) could grow to over $700,000 by retirement. Starting at age 35 with the same contributions? Less than $250,000. The gap is purely from time — not income, not luck. Starting early is the single most powerful financial decision a young person can make.</div>
+    </div>
+  </div>
+
+  <div class="subsec-title">Types of Investment Accounts</div>
+
+  <div class="g3">
+    <div class="acct-card">
+      <span class="acct-tag tag-taxable">Taxable</span>
+      <div class="acct-name">Taxable Brokerage</div>
+      <div class="acct-desc">A flexible investment account with no contribution limits and no restrictions on when you can withdraw. Invest in stocks, bonds, index funds, and ETFs. You pay taxes on dividends and capital gains each year, but there are no penalties for accessing your money anytime.</div>
+      <div class="acct-facts">
+        <div class="acct-facts-label">Key Facts</div>
+        <div class="acct-facts-list">• No contribution limit<br>• No early withdrawal penalty<br>• Taxes on gains each year<br>• Ideal for goals before retirement<br>• Use after maxing tax-advantaged accounts</div>
+      </div>
+    </div>
+
+    <div class="acct-card" style="border: 2px solid var(--green-accent);">
+      <span class="acct-tag tag-free">⭐ Tax-Free Growth</span>
+      <div class="acct-name">Roth IRA</div>
+      <div class="acct-desc">Contribute money you've already paid taxes on — and it grows completely tax-free forever. Withdrawals in retirement are 100% tax-free, including all the investment gains. This is one of the most powerful wealth-building tools available to individuals. Income limits apply, so use it while you qualify.</div>
+      <div class="acct-facts">
+        <div class="acct-facts-label">Key Facts</div>
+        <div class="acct-facts-list">• 2026 limit: $7,500/yr ($8,600 if 50+)<br>• Income phaseout: $153k–$168k (single)<br>• Tax-free growth AND withdrawals<br>• Contributions (not gains) withdrawable anytime<br>• Must be 59½ to withdraw gains tax-free</div>
+      </div>
+    </div>
+
+    <div class="acct-card">
+      <span class="acct-tag tag-deferred">Tax-Deferred</span>
+      <div class="acct-name">Traditional IRA / 401(k)</div>
+      <div class="acct-desc">Contribute pre-tax dollars now, which reduces your taxable income today. Your money grows tax-deferred and you pay taxes when you withdraw in retirement. If your employer offers a 401(k) match, always contribute at least enough to get the full match first — it's free money.</div>
+      <div class="acct-facts">
+        <div class="acct-facts-label">Key Facts</div>
+        <div class="acct-facts-list">• 401(k) 2026 limit: $24,500/yr<br>• Ages 50–59 catch-up: +$8,000 ($32,500 total)<br>• Ages 60–63 catch-up: +$11,250 ($35,750 total)<br>• IRA 2026 limit: $7,500/yr<br>• Tax break now, pay taxes later<br>• Employer match = instant 50–100% return</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-icon">🎯</div>
+    <div>
+      <div class="callout-head">Recommended Investing Order of Operations</div>
+      <div class="callout-body">1. Contribute to your 401(k) up to the full employer match — that's an instant 50–100% return. 2. Max your Roth IRA ($7,500/yr in 2026) — tax-free growth is extremely valuable when you're young. 3. Go back to your 401(k) and contribute more toward the $24,500 annual max. 4. Open a taxable brokerage account for anything beyond those limits.</div>
+    </div>
+  </div>
+
+  <!-- ROTH IRA CALCULATOR -->
+  <div style="margin-top: 36px; margin-bottom: 8px;">
+    <div class="sec-title" style="font-size:24px;">Interactive Roth IRA Calculator</div>
+    <div class="sec-lead" style="margin-top:6px; font-size:15px;">See how much tax-free wealth you can accumulate — adjust the sliders to make it personal.</div>
+  </div>
+
+  <div class="calc-wrap">
+    <div class="calc-panel">
+      <div class="calc-head">Your Numbers</div>
+
+      <div class="inp-group">
+        <div class="inp-label">Current Age <span class="inp-val" id="lbl-age">22</span></div>
+        <input type="range" id="calc-age" min="18" max="55" value="22" step="1" oninput="updateCalc()">
+      </div>
+
+      <div class="inp-group">
+        <div class="inp-label">Retirement Age <span class="inp-val" id="lbl-retire">65</span></div>
+        <input type="range" id="calc-retire" min="55" max="75" value="65" step="1" oninput="updateCalc()">
+      </div>
+
+      <div class="inp-group">
+        <div class="inp-label">Monthly Contribution <span class="inp-val" id="lbl-contrib">$200</span></div>
+        <input type="range" id="calc-contrib" min="50" max="625" value="200" step="10" oninput="updateCalc()">
+        <div class="inp-hint">Annual max is $7,500 ($625/mo) for 2026. Even $50/month makes a real difference.</div>
+      </div>
+
+      <div class="inp-group">
+        <div class="inp-label">Expected Annual Return <span class="inp-val" id="lbl-return">7%</span></div>
+        <input type="range" id="calc-return" min="3" max="12" value="7" step="0.5" oninput="updateCalc()">
+        <div class="inp-hint">The S&amp;P 500 has averaged ~10% historically; 7% adjusts for inflation.</div>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric hero">
+        <div class="metric-label">Tax-Free Retirement Balance</div>
+        <div class="metric-val" id="res-total">$0</div>
+        <div class="metric-sub">100% yours — the IRS cannot touch this in retirement</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Total You Contributed</div>
+        <div class="metric-val" id="res-contributed" style="color: var(--green-dark);">$0</div>
+        <div class="metric-sub">Your actual out-of-pocket investment over the years</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Tax-Free Growth</div>
+        <div class="metric-val" id="res-growth" style="color: var(--green-mid);">$0</div>
+        <div class="metric-sub">Money the market added — and you owe zero tax on it</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Years of Growth</div>
+        <div class="metric-val" id="res-years" style="color: var(--green-dark);">43 yrs</div>
+        <div class="metric-sub">Time is your single most powerful financial asset</div>
+      </div>
+      <div class="metric gold-card">
+        <div class="metric-label">Taxable Account Equivalent</div>
+        <div class="metric-val" id="res-taxable">$0</div>
+        <div class="metric-sub">What you'd need in a taxable account to match this after a 25% tax rate</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">Your Roth IRA Growth Over Time</div>
+    <div class="chart-sub">Total tax-free balance vs. cumulative contributions — the gap between the two lines is the market's gift to you</div>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#1E7A42;"></span>Total Balance (Tax-Free)</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#C49A25; opacity:0.8;"></span>Your Contributions</div>
+    </div>
+    <div style="position: relative; width: 100%; height: 340px;">
+      <canvas id="rothChart" role="img" aria-label="Line chart showing Roth IRA total balance and cumulative contributions growing over time by age">Your Roth IRA balance grows over time as contributions and investment returns compound.</canvas>
+    </div>
+  </div>
+
+  <div class="callout green" style="margin-top: 24px;">
+    <div class="callout-icon">🌱</div>
+    <div>
+      <div class="callout-head">What to Actually Invest In Inside Your Roth IRA</div>
+      <div class="callout-body">A Roth IRA is just the account — you still have to choose investments inside it. For first-time investors, a simple target-date retirement fund (e.g., "Target 2060 Fund") or a broad index fund like a Total Stock Market ETF is a solid, low-cost starting point. The fund handles diversification automatically. Don't let choosing what to invest in become a barrier to getting started.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== KEY TERMS ======================== -->
+<section id="tab-terms" class="section">
+  <div class="sec-head">
+    <div class="sec-badge">Reference · Glossary</div>
+    <div class="sec-title">Key Terms</div>
+    <div class="sec-lead">Click any card to flip it and reveal the definition. Master these terms and you'll understand the language of personal finance.</div>
+  </div>
+
+  <div style="display:flex; align-items:center; gap:14px; margin-bottom:28px; padding:14px 18px; background:var(--gold-pale); border-radius:10px; border:1px solid #E8D090;">
+    <span style="font-size:22px;">🎴</span>
+    <span style="font-size:14px; color:var(--gold-dark); font-weight:500;">Tap any card to flip it. Tap again to flip it back. See how many you know before peeking!</span>
+  </div>
+
+  <div class="terms-grid" id="termsGrid"></div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div><span class="footer-name">Jose Manzo</span> · Counselor &amp; Professor · Cañada College</div>
+  <div style="margin-top: 6px; font-size: 12px; opacity: 0.6;">Personal Finance Fundamentals — Career Course · This material is for educational purposes only and does not constitute personalized financial advice.</div>
+</footer>
+
+<script>
+var rothChart = null;
+
+var TERMS = [
+  { emoji: '📈', term: 'APY', def: 'Annual Percentage Yield — the real rate of return on savings including compounding. Higher APY means your savings grows faster. Always compare APYs when choosing a savings account.' },
+  { emoji: '💳', term: 'APR', def: 'Annual Percentage Rate — the yearly interest rate charged on borrowed money (loans, credit cards). Unlike APY, it doesn\'t include compounding. A 20% APR credit card costs 20 cents per dollar per year if you carry a balance.' },
+  { emoji: '💰', term: 'Interest', def: 'The cost of borrowing money — paid by you on loans and credit cards. Also the reward for saving — paid to you by banks on your deposits. Interest is how money moves between borrowers and savers.' },
+  { emoji: '🏦', term: 'HYSA', def: 'High-Yield Savings Account — a savings account, usually at an online bank, that pays significantly more interest than traditional banks. Often 10–50x higher APY. Your money is just as safe (FDIC insured) but grows much faster.' },
+  { emoji: '🤝', term: 'Credit Union', def: 'A non-profit financial cooperative owned by its members. Because profits go back to members rather than shareholders, credit unions often offer lower loan rates, higher savings rates, and fewer fees than traditional banks.' },
+  { emoji: '🛡️', term: 'FDIC', def: 'Federal Deposit Insurance Corporation — a U.S. government agency that protects your bank deposits up to $250,000 per account, per bank. If your bank fails, the FDIC guarantees your money is safe. Credit unions have equivalent protection through NCUA.' },
+  { emoji: '🔄', term: 'Compound Interest', def: 'Earning interest on your interest. Your account balance grows, and then the next period\'s interest is calculated on that larger balance. Over time this creates exponential growth — the longer you wait, the more powerful it becomes.' },
+  { emoji: '🏢', term: 'Brokerage', def: 'A licensed firm or account that lets you buy and sell investments — stocks, bonds, ETFs, and mutual funds. A taxable brokerage account has no contribution limits and no withdrawal restrictions, unlike retirement accounts.' },
+  { emoji: '🏗️', term: '401(k)', def: 'An employer-sponsored retirement savings plan where you contribute pre-tax money directly from your paycheck. Many employers match your contributions — which is free money. The 2026 contribution limit is $24,500 per year.' },
+  { emoji: '🌱', term: 'Roth IRA', def: 'A retirement account where you contribute money you\'ve already paid taxes on. Your investments grow completely tax-free and withdrawals in retirement are 100% tax-free. The 2026 contribution limit is $7,500 per year.' },
+  { emoji: '⏳', term: 'Traditional IRA', def: 'An Individual Retirement Account where contributions may be tax-deductible now, reducing your taxable income today. You pay taxes when you withdraw the money in retirement. Ideal if you expect to be in a lower tax bracket later.' },
+  { emoji: '📊', term: 'Index Fund', def: 'A fund that automatically tracks a market index like the S&P 500, investing in all (or most) companies within it. Known for very low fees, broad diversification, and consistently strong long-term returns. A great starting point for new investors.' },
+  { emoji: '🧺', term: 'ETF', def: 'Exchange-Traded Fund — a basket of many investments (stocks, bonds, etc.) bundled together and traded on an exchange like a single stock. ETFs offer instant diversification at a low cost and can be bought in any brokerage account.' },
+  { emoji: '🥚', term: 'Diversification', def: 'Spreading your money across many different investments to reduce risk. If one company or sector performs poorly, others may offset those losses. "Don\'t put all your eggs in one basket" is the core idea.' },
+  { emoji: '📉', term: 'Inflation', def: 'The gradual rise in prices over time, which slowly erodes your purchasing power. If inflation is 3% and your savings earns 0.01%, you\'re losing ground. This is why investing — not just saving — matters for long-term wealth.' },
+  { emoji: '💼', term: 'Net Worth', def: 'The total value of everything you own (assets: savings, home, car, investments) minus everything you owe (debts: loans, credit cards, mortgage). Tracking your net worth over time is the clearest picture of your financial health.' },
+  { emoji: '🏷️', term: 'Tax-Deferred', def: 'You don\'t pay taxes on the money now — you pay later when you withdraw it in retirement. Traditional 401(k)s and IRAs work this way. It\'s valuable because your full contribution (including the tax you\'d have paid) grows for decades.' },
+  { emoji: '🎯', term: 'Credit Score', def: 'A number from 300 to 850 that represents how reliable you are as a borrower, based on payment history, amounts owed, credit length, credit mix, and new credit. Higher scores unlock better loan rates and more financial opportunities.' },
+  { emoji: '📐', term: 'Credit Utilization', def: 'The percentage of your total available credit that you\'re currently using. If your limit is $5,000 and your balance is $500, your utilization is 10%. Keeping this below 30% — ideally below 10% — significantly helps your credit score.' },
+  { emoji: '💵', term: 'Principal', def: 'The original amount of money borrowed or invested, before any interest is added. When you pay off a loan, part of each payment covers interest and part reduces the principal — your goal is always to shrink the principal.' },
+  { emoji: '🎁', term: 'Employer Match', def: 'When your employer contributes money to your 401(k) based on how much you contribute. For example, "50% match up to 6% of salary" means for every dollar you put in (up to 6% of pay), your employer adds 50 cents. Always capture the full match — it\'s free money.' },
+  { emoji: '🪣', term: 'Sinking Fund', def: 'A savings account you gradually fill over time for a specific planned expense — vacation, new phone, car repairs. It prevents large predictable expenses from feeling like emergencies by breaking them into small monthly contributions.' },
+  { emoji: '🛡️', term: 'Emergency Fund', def: '3 to 6 months of essential living expenses kept in an easily accessible savings account (ideally a HYSA). It\'s your financial safety net for unexpected events — job loss, medical bills, car breakdowns — so you don\'t have to go into debt.' },
+  { emoji: '📦', term: 'Mutual Fund', def: 'A pool of money from many investors, managed by a professional, invested in a diversified collection of stocks, bonds, or other assets. Investors buy shares of the fund. Index funds are a type of mutual fund that simply tracks a market index.' }
+];
+
+function buildTerms() {
+  var grid = document.getElementById('termsGrid');
+  if (!grid || grid.children.length > 0) return;
+  TERMS.forEach(function(t) {
+    var card = document.createElement('div');
+    card.className = 'flip-card';
+    card.innerHTML =
+      '<div class="flip-inner">' +
+        '<div class="flip-front">' +
+          '<div class="flip-front-emoji">' + t.emoji + '</div>' +
+          '<div class="flip-front-term">' + t.term + '</div>' +
+          '<div class="flip-front-hint">tap to reveal</div>' +
+        '</div>' +
+        '<div class="flip-back">' +
+          '<div class="flip-back-term">' + t.term + '</div>' +
+          '<div class="flip-back-def">' + t.def + '</div>' +
+        '</div>' +
+      '</div>';
+    card.addEventListener('click', function() { card.classList.toggle('flipped'); });
+    grid.appendChild(card);
+  });
+}
+
+function showTab(tab) {
+  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var map = {debt:0, banking:1, credit:2, investing:3, terms:4};
+  document.querySelectorAll('.nav-btn')[map[tab]].classList.add('active');
+  if (tab === 'investing') { setTimeout(updateCalc, 120); }
+  if (tab === 'terms') { setTimeout(buildTerms, 80); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+
+function updateCalc() {
+  var age = parseInt(document.getElementById('calc-age').value);
+  var retire = parseInt(document.getElementById('calc-retire').value);
+  var contrib = parseInt(document.getElementById('calc-contrib').value);
+  var rate = parseFloat(document.getElementById('calc-return').value);
+
+  if (retire <= age + 1) { retire = age + 2; document.getElementById('calc-retire').value = retire; }
+
+  document.getElementById('lbl-age').textContent = age;
+  document.getElementById('lbl-retire').textContent = retire;
+  document.getElementById('lbl-contrib').textContent = '$' + contrib;
+  document.getElementById('lbl-return').textContent = rate + '%';
+
+  var years = retire - age;
+  var mr = (rate / 100) / 12;
+  var months = years * 12;
+  var total = mr === 0 ? contrib * months : contrib * (Math.pow(1 + mr, months) - 1) / mr;
+  var contributed = contrib * months;
+  var growth = total - contributed;
+
+  document.getElementById('res-total').textContent = fmt(total);
+  document.getElementById('res-contributed').textContent = fmt(contributed);
+  document.getElementById('res-growth').textContent = fmt(growth);
+  document.getElementById('res-years').textContent = years + ' yrs';
+  document.getElementById('res-taxable').textContent = fmt(total / 0.75);
+
+  var labels = [], balances = [], contribs = [];
+  for (var y = 0; y <= years; y++) {
+    labels.push(age + y);
+    var m = y * 12;
+    var bal = mr === 0 ? contrib * m : contrib * (Math.pow(1 + mr, m) - 1) / mr;
+    balances.push(Math.round(bal));
+    contribs.push(Math.round(contrib * m));
+  }
+
+  if (rothChart) {
+    rothChart.data.labels = labels;
+    rothChart.data.datasets[0].data = balances;
+    rothChart.data.datasets[1].data = contribs;
+    rothChart.update('none');
+  } else {
+    var ctx = document.getElementById('rothChart').getContext('2d');
+    rothChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Total Balance (Tax-Free)',
+            data: balances,
+            borderColor: '#1E7A42',
+            backgroundColor: 'rgba(30,122,66,0.1)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#1E7A42'
+          },
+          {
+            label: 'Your Contributions',
+            data: contribs,
+            borderColor: '#C49A25',
+            backgroundColor: 'rgba(196,154,37,0.07)',
+            borderWidth: 2,
+            borderDash: [7, 4],
+            fill: true,
+            tension: 0,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#C49A25'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0B3D1E',
+            titleColor: '#F0D070',
+            bodyColor: 'rgba(255,255,255,0.85)',
+            padding: 12,
+            callbacks: {
+              label: function(ctx) {
+                return '  ' + ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString();
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Age', font: { size: 12 }, color: '#5A7A65' },
+            grid: { color: 'rgba(0,0,0,0.04)' },
+            ticks: { color: '#5A7A65', font: { size: 11 }, maxTicksLimit: 12 }
+          },
+          y: {
+            title: { display: true, text: 'Balance', font: { size: 12 }, color: '#5A7A65' },
+            grid: { color: 'rgba(0,0,0,0.06)' },
+            ticks: {
+              color: '#5A7A65',
+              font: { size: 11 },
+              callback: function(v) {
+                if (v >= 1000000) return '$' + (v/1000000).toFixed(1) + 'M';
+                if (v >= 1000) return '$' + Math.round(v/1000) + 'k';
+                return '$' + v;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+}
+
+window.addEventListener('load', function() { updateCalc(); });
+</script>
+
+</body>
+</html>
